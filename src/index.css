@@ -1,0 +1,144 @@
+body {
+  background-color: #222;
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+.header {
+  position: relative;
+  margin-bottom: 15rem;
+}
+
+.header__background {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.header__marvelText {
+  position: absolute;
+  z-index: 2;
+  bottom: 2.5%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: 12rem;
+}
+
+.content {
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+.cards {
+  display: grid;
+  justify-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  align-items: stretch;
+  justify-items: stretch;
+  margin-bottom: 5rem;
+}
+
+.cardItem {
+  text-align: center;
+  color: white;
+  border: 1px solid white;
+  margin: 3rem;
+  padding: 0 1rem;
+  display:flex;
+  flex-direction: column;
+  align-content: space-around;
+  height: 30rem;
+}
+
+.cardItem__heroImage {
+  position: relative;
+  width: 100%;
+  top: -3rem;
+  left: 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid white;
+
+}
+
+.cardItem__text {
+  position: relative;
+  min-height: 3rem;
+  top: -1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10vh;
+  padding-right: 3rem;
+}
+
+.pagination > span {
+  padding: 0.5vw 1vw;
+  color: #7e7e7e;
+  font-size: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.pagination__number-active {
+  color: #222 !important;
+  background-color: #7e7e7e;
+  border-radius: 20px;
+  padding: 0.5vw 1vw !important;
+  cursor: default !important;
+}
+
+.pagination__dots {
+  cursor: default !important;
+}
+
+@media only screen and (max-width: 1200px) {
+  .cards {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .header {
+    margin-bottom: 8rem;
+  }
+  .header__marvelText {
+    height: 6rem;
+  }
+  .pagination {
+    padding: 0 2rem;
+    margin-bottom: 5rem;
+    justify-content: center;
+  }
+  .cardItem{
+    height: 20rem;
+  }
+  
+}
+
+@media only screen and (max-width: 800px) {
+  .cards {
+    grid-template-columns: 1fr;
+    margin: auto;
+    width:70%
+  }
+  .header {
+    margin-bottom: 5rem;
+  }
+  .header__marvelText {
+    height: 5rem;
+  }
+  .pagination {
+    justify-content: space-evenly;
+    padding:0
+  }
+  .cardItem{
+    height: 18rem;
+  }
+  
+}
