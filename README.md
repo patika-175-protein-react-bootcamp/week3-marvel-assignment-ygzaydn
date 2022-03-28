@@ -1,4 +1,4 @@
-# Protein React Bootcamp Week-3 Homework
+# Protein React Bootcamp Week-2 Homework
 
 This repo represents my solution for week-2 homework.
 
@@ -23,23 +23,4 @@ Some key features that I've add:
 -   I have used sessionStorage to keep maximum number of elements that API serves us. By doing it, I am able to track maximum number of pages dynamically.
 -   I have simulated skeleton loading. When client ask data from server, users will see gray background until operation is successful.
 -   I also used Google's firebase hosting service for lazy fingers. :smile: You can reach [the website here](https://bootcampweektwo.web.app)
-
-
-
-
-# week3 case
-
-https://developer.marvel.com/ API ını kullanarak geçen hafta ki çalışmanızı devam ettirmeniz istenmektedir.
-
-**HEDEF** : Bir React.JS projesi içerisinde API a istek atarak belirli dataları göstermek ve sayfalamak.
-
-**İsterler**
-++ Api üzerinde bulunan pagination yapısı ile projenizde pagination yapmanız istenmektedir. Her sayfa değişiminde istek atılarak o sayfaya ait data gelecektir. Ancak geri dönüldüğünde **local storage % session storage** üzerinden data alınması sağlanmalıdır. Sayfada geri dönüldüğünde istek atılmamalıdır.
-
-++ useEffect, useState hooks kullanımına özen gösterilmelidir.
-
-++ Axios kullanmanız önerilir.
-
-++ CSS, HTML, JS ile devam edeceğiz. Projenizde ekstra CSS sablonları v.s kullanmayınız.
-
 
