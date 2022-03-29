@@ -1,6 +1,6 @@
-# Protein React Bootcamp Week-2 Homework
+# Protein React Bootcamp Week-3 Homework
 
-This repo represents my solution for week-2 homework.
+This repo represents my solution for week-3 homework.
 
 In order to make repo works, first step you have to is to create a ```.env.local``` file and add your keys to it. (I hide my public/private keys for protection issues.)
 
@@ -24,3 +24,16 @@ Some key features that I've add:
 -   I have simulated skeleton loading. When client ask data from server, users will see gray background until operation is successful.
 -   I also used Google's firebase hosting service for lazy fingers. :smile: You can reach [the website here](https://bootcampweektwo.web.app)
 
+## Snapshots
+
+-   Desktop
+
+![desktop](./desktop.png)
+
+-   Tablet
+
+![tablet](./tablet.png)
+
+-   Mobile
+
+![mobile](mobile.png)
