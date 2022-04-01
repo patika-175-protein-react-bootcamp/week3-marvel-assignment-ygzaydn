@@ -1,15 +1,15 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import axios from 'axios';
 
-import BackgroundImage from './assets/background2.png';
+import BackgroundImage from './assets/background2-min.png';
 import MarvelText from './assets/marvelText.png';
 import RightArrow from './assets/rightArrow.png';
 import LeftArrow from './assets/leftArrow.png';
 
 function App() {
   const [page, setPage] = useState(1); // tracks current page
-  const [information, setInformation] = useState({});
+  const [information, setInformation] = useState({ heroes: Array(20).fill({}) });
   const [loading, setLoading] = useState(false);
   const [paginationArray, setPaginationArray] = useState([]);
   const contentGrid = useRef(null);
@@ -102,41 +102,44 @@ function App() {
     });
   };
 
-  const generatePaginationJSX = (paginationArrayElement, ind) => {
-    switch (paginationArrayElement) {
-      case 'LeftArrow':
-        return (
-          <span key={'larr'} className='pagination__arrow' onClick={() => changePage(page - longSkip)}>
-            <img src={LeftArrow} alt='leftArrow' />
-          </span>
-        );
+  const generatePaginationJSX = useCallback(
+    (paginationArrayElement, ind) => {
+      switch (paginationArrayElement) {
+        case 'LeftArrow':
+          return (
+            <span key={'larr'} className='pagination__arrow' onClick={() => changePage(page - longSkip)}>
+              <img src={LeftArrow} alt='leftArrow' />
+            </span>
+          );
 
-      case 'RightArrow':
-        return (
-          <span key={'rarr'} className='pagination__arrow' onClick={() => changePage(page + 4)}>
-            <img src={RightArrow} alt='rightArrow' />
-          </span>
-        );
+        case 'RightArrow':
+          return (
+            <span key={'rarr'} className='pagination__arrow' onClick={() => changePage(page + 4)}>
+              <img src={RightArrow} alt='rightArrow' />
+            </span>
+          );
 
-      case 'DOTS':
-        return (
-          <span key={paginationArrayElement + ind} className='pagination__dots'>
-            ...
-          </span>
-        );
+        case 'DOTS':
+          return (
+            <span key={paginationArrayElement + ind} className='pagination__dots'>
+              ...
+            </span>
+          );
 
-      default:
-        return (
-          <span
-            key={paginationArrayElement + ind}
-            className={paginationArrayElement === page ? 'pagination__number pagination__number-active' : 'pagination__number'}
-            onClick={paginationArrayElement !== page ? () => changePage(paginationArrayElement) : null}
-          >
-            {paginationArrayElement}
-          </span>
-        );
-    }
-  };
+        default:
+          return (
+            <span
+              key={paginationArrayElement + ind}
+              className={paginationArrayElement === page ? 'pagination__number pagination__number-active' : 'pagination__number'}
+              onClick={paginationArrayElement !== page ? () => changePage(paginationArrayElement) : null}
+            >
+              {paginationArrayElement}
+            </span>
+          );
+      }
+    },
+    [page]
+  );
 
   const changePage = (myPage = page) => {
     // Hash change triggers 'hashchange' eventlistener that I've created at the top of the component, whenever hash changes page state will also change.
@@ -144,18 +147,18 @@ function App() {
   };
 
   return (
-    <body>
+    <div>
       <section className='header'>
         <img src={BackgroundImage} alt='Background' className='header__background' />
         <img src={MarvelText} alt='Marvel Text' className='header__marvelText' />
       </section>
       <section className='content' ref={contentGrid}>
         <section className='cards'>
-          {information?.heroes?.map((el) => (
-            <div className='cardItem' key={el.id}>
+          {information?.heroes?.map((el, ind) => (
+            <div className='cardItem' key={el?.id ? el.id : ind}>
               <div className={loading ? 'cardItem__heroImage--gridloading cardItem__heroImage--grid' : 'cardItem__heroImage--grid'}>
                 <img
-                  src={!loading ? el.thumbnail.path + '/portrait_xlarge.' + el.thumbnail.extension : null}
+                  src={!loading ? el.thumbnail?.path + '/portrait_xlarge.' + el.thumbnail?.extension : null}
                   alt={el.name + '-img'}
                   className={loading ? 'cardItem__heroImage--image cardItem__heroImage--loading' : 'cardItem__heroImage--image'}
                 />
@@ -166,7 +169,7 @@ function App() {
         </section>
         <section className='pagination'>{information?.heroes && paginationArray?.map((el, ind) => generatePaginationJSX(el, ind))}</section>
       </section>
-    </body>
+    </div>
   );
 }
 
