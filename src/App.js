@@ -1,34 +1,31 @@
 /* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
 import BackgroundImage from './assets/background2.png';
 import MarvelText from './assets/marvelText.png';
+import RightArrow from './assets/rightArrow.png';
+import LeftArrow from './assets/leftArrow.png';
 
 function App() {
   const [page, setPage] = useState(1); // tracks current page
   const [information, setInformation] = useState({});
   const [loading, setLoading] = useState(false);
   const [paginationArray, setPaginationArray] = useState([]);
+  const contentGrid = useRef(null);
 
   const longSkip = 4;
 
   useEffect(() => {
     // Hash changer event listener to adapt hash changes. So that users can browse any page they want to. ..../#<page-number>
-    window.addEventListener('hashchange', () => pageChecker());
-    window.location.hash = page;
+    window.addEventListener('hashchange', hashHandler);
+    return () => window.addEventListener('hashchange', hashHandler);
+  }, []);
+
+  useEffect(() => {
     getData();
     generatePaginationArray(page);
-    return () => window.removeEventListener('hashchange', () => pageChecker());
   }, [page, information.limit]);
-
-  const pageChecker = () => {
-    // pageChecker method is used to dynamically check the value of state 'page'.
-    let pageToCheck = parseInt(window.location.hash.split('#')[1]);
-    if (page !== pageToCheck) {
-      setPage(pageToCheck);
-    }
-  };
 
   const getData = () => {
     // main function for query action. Helps us to store data on sessionStorage and avoids unnecessary fetch actions.
@@ -47,7 +44,10 @@ function App() {
           storageItems[page] = [...resp.data.data.results];
           sessionStorage.setItem('info', JSON.stringify(storageItems));
           sessionStorage.setItem('limit', JSON.stringify(resp.data.data.total / 20));
-          setInformation({ heroes: resp.data.data.results, limit: resp.data.data.total / 20 });
+          setInformation({
+            heroes: resp.data.data.results,
+            limit: resp.data.data.total / 20
+          });
           setLoading(false);
         });
     } else {
@@ -57,6 +57,7 @@ function App() {
   };
 
   const generatePaginationArray = (page) => {
+    // For pagination, I've created paginationArray, which will be rendered on the page and changes whenever a page change
     const pageArray = [];
     if (page <= longSkip) {
       for (let i = 1; i < longSkip + 1; i++) {
@@ -92,19 +93,28 @@ function App() {
     setPaginationArray([...pageArray]);
   };
 
+  const hashHandler = () => {
+    // Defines the behaviour when hash changes
+    setPage(parseInt(window.location.hash.substring(1)));
+    contentGrid.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
   const generatePaginationJSX = (paginationArrayElement, ind) => {
     switch (paginationArrayElement) {
       case 'LeftArrow':
         return (
-          <span key={'larr'} className='pagination__arrow' onClick={() => setPage(page - longSkip)}>
-            &larr;
+          <span key={'larr'} className='pagination__arrow' onClick={() => changePage(page - longSkip)}>
+            <img src={LeftArrow} alt='leftArrow' />
           </span>
         );
 
       case 'RightArrow':
         return (
-          <span key={'rarr'} className='pagination__arrow' onClick={() => setPage(page + 4)}>
-            &rarr;
+          <span key={'rarr'} className='pagination__arrow' onClick={() => changePage(page + 4)}>
+            <img src={RightArrow} alt='rightArrow' />
           </span>
         );
 
@@ -120,12 +130,17 @@ function App() {
           <span
             key={paginationArrayElement + ind}
             className={paginationArrayElement === page ? 'pagination__number pagination__number-active' : 'pagination__number'}
-            onClick={() => setPage(paginationArrayElement)}
+            onClick={paginationArrayElement !== page ? () => changePage(paginationArrayElement) : null}
           >
             {paginationArrayElement}
           </span>
         );
     }
+  };
+
+  const changePage = (myPage = page) => {
+    // Hash change triggers 'hashchange' eventlistener that I've created at the top of the component, whenever hash changes page state will also change.
+    window.location.hash = myPage;
   };
 
   return (
@@ -134,18 +149,17 @@ function App() {
         <img src={BackgroundImage} alt='Background' className='header__background' />
         <img src={MarvelText} alt='Marvel Text' className='header__marvelText' />
       </section>
-      <section className='content'>
+      <section className='content' ref={contentGrid}>
         <section className='cards'>
           {information?.heroes?.map((el) => (
             <div className='cardItem' key={el.id}>
               <div className={loading ? 'cardItem__heroImage--gridloading cardItem__heroImage--grid' : 'cardItem__heroImage--grid'}>
                 <img
-                  src={!loading && el.thumbnail.path + '/portrait_xlarge.' + el.thumbnail.extension}
+                  src={!loading ? el.thumbnail.path + '/portrait_xlarge.' + el.thumbnail.extension : null}
                   alt={el.name + '-img'}
-                  className={loading ? 'cardItem__heroImage--image cardItem__heroImage--loading' : 'cardItem--heroImage--image'}
+                  className={loading ? 'cardItem__heroImage--image cardItem__heroImage--loading' : 'cardItem__heroImage--image'}
                 />
               </div>
-
               <p className={'cardItem__text'}>{!loading ? el.name : 'Loading...'}</p>
             </div>
           ))}
@@ -157,95 +171,3 @@ function App() {
 }
 
 export default App;
-
-/*
-
-  {0 < page && page < 5 && (
-              <>
-                {Array.from(Array(4).keys()).map((el) => (
-                  <span
-                    key={el + 1}
-                    className={el + 1 === page ? 'pagination__number pagination__number-active' : 'pagination__number'}
-                    onClick={() => setPage(el + 1)}
-                  >
-                    {el + 1}
-                  </span>
-                ))}
-                {page === 4 && (
-                  <span key={5} className={'pagination__number'} onClick={() => setPage(5)}>
-                    5
-                  </span>
-                )}
-                <span className='pagination__dots'>...</span>
-                {limit > 0 && (
-                  <span className='pagination__number' onClick={() => setPage(limit)}>
-                    {limit}
-                  </span>
-                )}
-
-                <span className='pagination__arrow' onClick={() => setPage(page + 4)}>
-                  &rarr;
-                </span>
-              </>
-            )}
-
-            {page > 4 && page < limit - 3 && (
-              <>
-                <span className='pagination__arrow' onClick={() => setPage(page - 4)}>
-                  &larr;
-                </span>
-                <span key={1} className={'pagination__number'} onClick={() => setPage(1)}>
-                  1
-                </span>
-                <span className='pagination__dots'>...</span>
-                <span key={page - 1} className={'pagination__number'} onClick={() => setPage(page - 1)}>
-                  {page - 1}
-                </span>
-                <span key={page} className={'pagination__number pagination__number-active'}>
-                  {page}
-                </span>
-                <span key={page + 1} className={'pagination__number'} onClick={() => setPage(page + 1)}>
-                  {page + 1}
-                </span>
-                <span className='pagination__dots'>...</span>
-                <span key={limit} className={'pagination__number'} onClick={() => setPage(limit)}>
-                  {limit}
-                </span>
-                <span className='pagination__arrow' onClick={() => setPage(page + 4)}>
-                  &rarr;
-                </span>
-              </>
-            )}
-
-            {page > limit - 4 && limit > 1 && (
-              <>
-                <span className='pagination__arrow' onClick={() => setPage(page - 4)}>
-                  &larr;
-                </span>
-                <span key={1} className={'pagination__number'} onClick={() => setPage(1)}>
-                  1
-                </span>
-                <span className='pagination__dots'>...</span>
-                {page === limit - 3 && (
-                  <span key={limit - 4} className='pagination__number' onClick={() => setPage(limit - 4)}>
-                    {limit - 4}
-                  </span>
-                )}
-                {Array.from(Array(6).keys()).map((el) => {
-                  el += limit - 4;
-                  if (page > el || el < limit) {
-                    return (
-                      <span
-                        key={el + 1}
-                        className={el + 1 === page ? 'pagination__number pagination__number-active' : 'pagination__number'}
-                        onClick={() => setPage(el + 1)}
-                      >
-                        {el + 1}
-                      </span>
-                    );
-                  }
-                })}
-              </>
-            )}
-
-*/
