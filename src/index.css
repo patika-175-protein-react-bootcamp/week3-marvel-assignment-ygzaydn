@@ -5,6 +5,7 @@
   --background-secondary: #7e7e7e;
   --gradient-first:#ddd;
   --gradient-second:#e8e8e8;
+  --transition: all .4s;
 }
 
 html{
@@ -73,16 +74,25 @@ body {
   padding: 0 1rem;
   display:flex;
   flex-direction: column;
-  transition: all .4s;
+  transition: var(--transition);
 }
 
 .cardItem:hover {
   background-color:white;
   color: var(--background-primary);
+  padding:0;
+  border-color: var(--background-primary);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
 
 .cardItem:hover .cardItem__text {
   font-size: 1.75rem;
+}
+
+.cardItem:hover .cardItem__heroImage--grid {
+  width: 100%;
+  border-top: none;
 }
 
 .cardItem__heroImage--grid {
@@ -93,6 +103,7 @@ body {
   width: 18rem;
   height: 27rem;
   overflow:hidden;
+  transition: var(--transition);
 }
 
 .cardItem__heroImage--image {
@@ -117,7 +128,7 @@ body {
   align-items: center;
   margin: auto;
   font-size: 1.5rem;
-  transition: all .4s;
+  transition: var(--transition);
 }
 
 .pagination {
@@ -137,22 +148,25 @@ body {
   margin: 0 .2rem;
 }
 
+.pagination__number-active{
+  background: var(--background-secondary);
+  color: white !important;
+}
+
 .pagination__number, .pagination__arrow {
   cursor: pointer;
-  transition: all .4s;
+  transition: var(--transition);
   border-radius: 20%;
 }
 
-pagination__arrow img{
-  transition: all .4s;
+.pagination__arrow img{
+  transition: var(--transition);
+  position: relative;
+  top:2.5px;
 } 
 
 .pagination__number:hover, .pagination__arrow:hover {
   color: white;
-}
-
-.pagination__number-active:hover {
-  background: var(--background-secondary);
 }
 
 .pagination__number-active:hover {
