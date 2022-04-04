@@ -1,0 +1,209 @@
+/* Resets & fixes & variables */
+
+:root{
+  --background-primary: #222;
+  --background-secondary: #7e7e7e;
+  --gradient-first:#ddd;
+  --gradient-second:#e8e8e8;
+  --transition: all .4s;
+}
+
+html{
+  font-size: 62.5%; /* 1rem is 10px for now 10/16 = 0.625*/
+}
+
+body {
+  background: var(--background-primary);
+  background-color: var(--background-primary);
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+}
+
+/* Animation for Skeleton Loading*/
+@keyframes shine-lines {
+  0% {
+    background-position: -100px;
+  }
+  40%, 100% {
+    background-position: 140px;
+  }
+}
+
+
+/* Style of the page */
+.header {
+  position: relative;
+  margin-bottom: 7.5rem;
+}
+
+.header__background {
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.header__marvelText {
+  position: absolute;
+  z-index: 2;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 15rem;
+}
+
+.content {
+  max-width: 1440px;
+  margin: 0 auto;
+  min-height: 50rem;
+  padding-top: 5rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4,min-content);
+  justify-content: space-between;
+  margin-bottom: 5rem;
+  min-height: 40rem;
+}
+
+.cardItem {
+  text-align: center;
+  color: white;
+  border: 1px solid white;
+  margin: 3rem;
+  padding: 0 1rem;
+  display:flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+.cardItem:hover {
+  background-color:white;
+  color: var(--background-primary);
+  padding:0;
+  border-color: var(--background-primary);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.cardItem:hover .cardItem__text {
+  font-size: 1.75rem;
+}
+
+.cardItem:hover .cardItem__heroImage--grid {
+  width: 100%;
+  border-top: none;
+}
+
+.cardItem__heroImage--grid {
+  position: relative;
+  top: -3rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid white;
+  width: 18rem;
+  height: 27rem;
+  overflow:hidden;
+  transition: var(--transition);
+}
+
+.cardItem__heroImage--image {
+  width: 100%;
+}
+
+.cardItem__heroImage--loading {
+  visibility: hidden;
+}
+
+.cardItem__heroImage--gridloading {
+  background-image: linear-gradient(90deg, var(--gradient-first) 0px, var(--gradient-second)  40px, var(--gradient-first)  80px);
+  background-size: 60rem;
+  animation: shine-lines 1.6s infinite linear;
+}
+
+.cardItem__text {
+  position: relative;
+  min-height: 5rem;
+  top: -1rem;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  font-size: 1.5rem;
+  transition: var(--transition);
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 5rem;
+  padding-right: 3rem;
+  
+}
+
+.pagination > span {
+  padding: 1rem 1.5rem ;
+  color: var(--background-secondary);
+  font-weight: 500;
+  font-size: 2rem;
+  margin: 0 .2rem;
+}
+
+.pagination__number-active{
+  background: var(--background-secondary);
+  color: var(--background-primary) !important;
+}
+
+.pagination__number, .pagination__arrow {
+  cursor: pointer;
+  transition: var(--transition);
+  border-radius: 20%;
+}
+
+.pagination__arrow img{
+  transition: var(--transition);
+  position: relative;
+  top:2.5px;
+} 
+
+.pagination__number:hover, .pagination__arrow:hover {
+  color: white;
+}
+
+.pagination__number-active:hover {
+  background: var(--background-secondary);
+}
+
+.pagination__arrow:hover img {
+  filter: brightness(0) invert(100%);
+}
+
+
+@media only screen and (max-width: 1200px) {
+  html{
+    font-size: 57.5%; /* Controls the overall fontSize and helps me on responsiveness */
+  }
+  .cards {
+    grid-template-columns: repeat(3,min-content);
+    justify-content: center;
+  }
+  .pagination {
+    padding: 0 2rem;
+    margin-bottom: 5rem;
+    justify-content: center;
+  }  
+}
+
+@media only screen and (max-width: 800px) {
+  html{
+    font-size: 50%; /* Controls the overall fontSize and helps me on responsiveness */
+  }
+  .cards {
+    grid-template-columns: min-content;    
+  }
+  .pagination > span, .pagination__number-active {
+    padding: .5rem;
+  }
+  .header__marvelText{
+    height: 10rem;
+  }
+}

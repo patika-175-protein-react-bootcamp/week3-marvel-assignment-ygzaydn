@@ -1,16 +1,39 @@
-# week3 case
+# Protein React Bootcamp Week-3 Homework
 
-https://developer.marvel.com/ API ını kullanarak geçen hafta ki çalışmanızı devam ettirmeniz istenmektedir.
+This repo represents my solution for week-3 homework.
 
-**HEDEF** : Bir React.JS projesi içerisinde API a istek atarak belirli dataları göstermek ve sayfalamak.
+In order to make repo works, first step you have to is to create a ```.env.local``` file and add your keys to it. (I hide my public/private keys for protection issues.)
 
-**İsterler**
-++ Api üzerinde bulunan pagination yapısı ile projenizde pagination yapmanız istenmektedir. Her sayfa değişiminde istek atılarak o sayfaya ait data gelecektir. Ancak geri dönüldüğünde **local storage % session storage** üzerinden data alınması sağlanmalıdır. Sayfada geri dönüldüğünde istek atılmamalıdır.
+An example `.env.local` file as follows:
 
-++ useEffect, useState hooks kullanımına özen gösterilmelidir.
+```
+REACT_APP_PUBLIC_KEY = xxxxxxxxxxxxx
+REACT_APP_PRIVATE_KEY = xxxxxxxxxx
+REACT_APP_ENCODED_KEY = xxxxxxxxx
+```
 
-++ Axios kullanmanız önerilir.
+> Please note that ENCODED_KEY has to be generated for MarvelAPI. The algoritm to generate it `digest(paste0(ts, privateKey, publicKey), algo="md5")`. I use ts parameter as "1". You can use [this link](https://www.md5hashgenerator.com/) to generate your own key. And please do not proceed before generate `.env.local` file.
 
-++ CSS, HTML, JS ile devam edeceğiz. Projenizde ekstra CSS sablonları v.s kullanmayınız.
+After you set your `.env.local` file, next step is to install npm packages with `npm i`. Now you are ready to start.
 
+Some key features that I've add:
 
+-   I have used hash implementation. Every page has different hash value (for page 1: localhost:3000/#1, overall structure localhost:3000/#<pagenumber>). By doing that, I allow users to surf around desired page. (e.g localhost:3000/#53 directly goes to page 53.)
+-   I have set sessionStorage to prevent unnecessary fetches.
+-   I have used sessionStorage to keep maximum number of elements that API serves us. By doing it, I am able to track maximum number of pages dynamically.
+-   I have simulated skeleton loading. When client ask data from server, users will see gray background until operation is successful.
+-   I also used Google's firebase hosting service for lazy fingers. :smile: You can reach [the website here](https://bootcampweektwo.web.app)
+
+## Snapshots
+
+-   Desktop
+
+![desktop](./desktop.gif)
+
+-   Tablet
+
+![tablet](./tablet.gif)
+
+-   Mobile
+
+![mobile](mobile.gif)
